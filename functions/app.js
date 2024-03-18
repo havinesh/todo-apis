@@ -1,5 +1,7 @@
 const express = require("express");
-const todos = require("./db");
+const serverless = require("serverless-http");
+const router = express.Router();
+const todos = require("../db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -65,6 +67,9 @@ app.delete("/api/todos/:id", (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
+
+app.use("/.netlify/functions/app", router);
+module.exports.handler = serverless(app);
